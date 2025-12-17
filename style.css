@@ -1,0 +1,225 @@
+/* --- VARIABLES & RESET --- */
+:root {
+    --neon-blue: #00f3ff;
+    --neon-pink: #bc13fe;
+    --neon-green: #0aff0a;
+    --bg-dark: #050505;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-dark);
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    overflow: hidden; /* Evitar scroll durante carga */
+    height: 100vh;
+}
+
+/* --- LOADING SCREEN --- */
+.loader-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-out;
+}
+
+.vinyl-loader {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(#111, #333, #111, var(--neon-blue), #111);
+    animation: spin 1s linear infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+    margin-bottom: 30px;
+}
+
+.vinyl-center {
+    width: 40px; height: 40px;
+    background: var(--bg-dark);
+    border-radius: 50%;
+    border: 2px solid var(--neon-pink);
+}
+
+.loading-text {
+    font-family: 'Orbitron';
+    letter-spacing: 3px;
+    color: var(--neon-blue);
+    margin-bottom: 20px;
+}
+
+.eq-loader {
+    display: flex; gap: 5px; height: 30px; align-items: flex-end;
+}
+
+.eq-bar {
+    width: 6px; background: var(--neon-pink);
+    animation: bounceLoader 0.5s infinite ease-in-out alternate;
+}
+.eq-bar:nth-child(2) { animation-delay: 0.1s; background: var(--neon-blue); }
+.eq-bar:nth-child(3) { animation-delay: 0.2s; background: var(--neon-green); }
+.eq-bar:nth-child(4) { animation-delay: 0.3s; background: var(--neon-blue); }
+.eq-bar:nth-child(5) { animation-delay: 0.4s; }
+
+/* --- MAIN CONTENT (Hidden initially) --- */
+.main-content {
+    opacity: 0;
+    transition: opacity 1s ease-in;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- BACKGROUND CANVAS --- */
+#bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(2px); }
+
+/* --- HERO SECTION & NEW DECODE EFFECT --- */
+.hero-container { text-align: center; margin-bottom: 3rem; position: relative; z-index: 10; }
+
+.dj-name-decode {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    color: white;
+    text-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-pink);
+    min-height: 1.2em; /* Mantener altura mientras se decodifica */
+    padding: 20px 0px;
+}
+
+.tagline {
+    font-size: 1.2rem; color: rgba(255,255,255,0.7); letter-spacing: 5px; margin-top: 10px;
+}
+
+/* --- NAVIGATION --- */
+.nav-container {
+    display: flex; gap: 20px; padding: 20px 40px;
+    background: var(--glass-bg); backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border); border-radius: 50px;
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+    z-index: 10;
+}
+
+.nav-btn {
+    background: transparent; border: none; color: white;
+    font-family: 'Orbitron', sans-serif; font-size: 1rem;
+    cursor: pointer; padding: 10px 25px; border-radius: 30px;
+    transition: all 0.3s ease; text-transform: uppercase;
+}
+
+.nav-btn:hover, .nav-btn.active {
+    background: rgba(255, 255, 255, 0.1); color: var(--neon-blue);
+    box-shadow: 0 0 15px var(--neon-blue); text-shadow: 0 0 5px var(--neon-blue);
+}
+
+/* --- CONTENT CARDS --- */
+.content-area {
+    margin-top: 3rem; width: 80%; max-width: 800px; height: 400px; /* Altura aumentada para el player */
+    position: relative;
+}
+
+.card {
+    position: absolute; top: 0; left: 0; width: 100%;
+    background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border); border-radius: 20px; padding: 40px;
+    opacity: 0; transform: translateY(20px) scale(0.95);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none; display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.card.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; z-index: 5; }
+.card h2 { font-family: 'Orbitron'; color: var(--neon-pink); margin-bottom: 20px; font-size: 2rem; }
+
+/* --- NEW CUSTOM PLAYER STYLES --- */
+.mixes-card { align-items: stretch; } /* Para que ocupe el ancho */
+
+.player-container {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px; padding: 25px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.track-info h3 { color: var(--neon-blue); margin-bottom: 5px; font-family: 'Orbitron'; }
+.track-info p { color: #aaa; font-size: 0.9rem; }
+
+.progress-area {
+    margin: 25px 0; cursor: pointer;
+}
+
+.progress-bar {
+    height: 8px; width: 0%;
+    background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+    border-radius: 10px; position: relative;
+    box-shadow: 0 0 10px var(--neon-blue);
+    transition: width 0.1s linear;
+}
+.progress-area:hover .progress-bar::after {
+    content: ''; position: absolute; right: -5px; top: -4px;
+    width: 16px; height: 16px; background: white; border-radius: 50%;
+    box-shadow: 0 0 15px white;
+}
+
+.time-display { display: flex; justify-content: flex-end; font-size: 0.8rem; color: #aaa; margin-top: 8px; }
+
+.controls { display: flex; justify-content: center; align-items: center; gap: 20px; }
+
+.ctrl-btn {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+    color: white; border-radius: 50%; width: 50px; height: 50px;
+    display: grid; place-items: center; cursor: pointer; transition: all 0.3s;
+}
+.ctrl-btn:hover {
+    color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); border-color: var(--neon-blue);
+}
+.play-btn-main {
+    width: 70px; height: 70px;
+    background: linear-gradient(135deg, rgba(0,243,255,0.2), rgba(188,19,254,0.2));
+}
+.play-btn-main i { font-size: 2.5rem; }
+
+.playlist-mini { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
+.track-item {
+    padding: 10px; cursor: pointer; color: #aaa; transition: all 0.3s; font-size: 0.9rem;
+}
+.track-item:hover { color: white; background: rgba(255,255,255,0.05); }
+.track-item.active { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+
+
+/* --- OTHER STYLES (Profile/Friends) --- */
+.bio-text { text-align: center; line-height: 1.6; }
+.highlight-blue { color: var(--neon-blue); } .highlight-pink { color: var(--neon-pink); }
+.visualizer-deco { display: flex; gap: 5px; height: 50px; align-items: flex-end; margin-top: 20px; }
+.bar { width: 8px; background: var(--neon-green); animation: bounce 1s infinite ease-in-out; border-radius: 5px; }
+.friend-list { display: flex; gap: 15px; margin-top: 15px; }
+.avatar { width: 50px; height: 50px; background: #333; border-radius: 50%; }
+.av-1 { border: 2px solid var(--neon-blue); } .av-2 { border: 2px solid var(--neon-pink); }
+.av-3 { border: 2px solid white; }
+.add-friend { border: 2px dashed gray; display:grid; place-items:center; cursor: pointer; }
+.friend-count { margin-top: 20px; font-size: 0.9rem; color: #aaa; }
+
+/* --- ANIMATIONS --- */
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes bounceLoader { 0% { height: 5px; } 100% { height: 30px; } }
+@keyframes bounce { 0%, 100% { height: 10px; } 50% { height: 40px; } }
+
+@media (max-width: 768px) {
+    .dj-name-decode { font-size: 3rem; }
+    .nav-container { padding: 15px; } .nav-btn { padding: 8px 15px; font-size: 0.8rem; }
+    .content-area { height: 450px; }
+    .card { padding: 25px; }
+}

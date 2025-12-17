@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DJ NEXUS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="loader-container" id="loader">
+        <div class="vinyl-loader">
+            <div class="vinyl-center"></div>
+        </div>
+        <div class="loading-text">Iniciando Sistema <span id="load-percent">0%</span></div>
+        <div class="eq-loader">
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <canvas id="bg-canvas"></canvas>
+
+        <div class="hero-container">
+            <h1 class="dj-name-decode" id="dj-name-target" data-value="DJ NEXUS">LOADING...</h1>
+            <p class="tagline">SONIC ARCHITECT // LIVE SETS</p>
+        </div>
+
+        <nav class="nav-container">
+            <button class="nav-btn active" onclick="showSection('profile', this)">Perfil</button>
+            <button class="nav-btn" onclick="showSection('mixes', this)">NexusMix</button>
+            <button class="nav-btn" onclick="showSection('friends', this)">Amigos</button>
+        </nav>
+
+        <div class="content-area">
+            
+            <div id="profile" class="card active">
+                <h2>SYSTEM DATA</h2>
+                <p class="bio-text">
+                    Transformando la atmósfera nocturna desde 2018. Especialista en 
+                    <span class="highlight-blue">Deep House</span> y <span class="highlight-pink">Techno Melódico</span>.
+                    Residente en los clubes más exclusivos de la metrópolis.
+                </p>
+                <div class="visualizer-deco">
+                    <div class="bar" style="animation-duration: 0.8s"></div>
+                    <div class="bar" style="animation-duration: 1.2s"></div>
+                    <div class="bar" style="animation-duration: 0.5s"></div>
+                    <div class="bar" style="animation-duration: 1.0s"></div>
+                    <div class="bar" style="animation-duration: 0.7s"></div>
+                </div>
+            </div>
+
+            <div id="mixes" class="card mixes-card">
+                <h2>NEXUS MIX</h2>
+                
+                <div class="player-container">
+                    <div class="track-info">
+                        <h3 id="track-title">Seleccionar Mix</h3>
+                        <p id="track-artist">DJ Nexus Exclusives</p>
+                    </div>
+
+                    <div class="progress-area" id="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                        <div class="time-display">
+                            <span id="curr-time">0:00</span> / <span id="total-time">0:00</span>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="ctrl-btn" id="prev-btn"><i class="material-icons">skip_previous</i></button>
+                        <button class="ctrl-btn play-btn-main" id="play-btn"><i class="material-icons" id="play-icon">play_arrow</i></button>
+                        <button class="ctrl-btn" id="next-btn"><i class="material-icons">skip_next</i></button>
+                    </div>
+                </div>
+
+                <div class="playlist-mini">
+                    <div class="track-item active" onclick="loadTrack(0)">01. Neon Genesis (Intro)</div>
+                    <div class="track-item" onclick="loadTrack(1)">02. Cyberpunk Bassline</div>
+                    <div class="track-item" onclick="loadTrack(2)">03. Midnight Protocol</div>
+                </div>
+            </div>
+
+            <div id="friends" class="card">
+                <h2>COMMUNITY NODES</h2>
+                <div class="friend-list">
+                    <div class="avatar av-1"></div>
+                    <div class="avatar av-2"></div>
+                    <div class="avatar av-3"></div>
+                    <div class="avatar add-friend">+</div>
+                </div>
+                <p class="friend-count">Conectado con 1.2k nodos</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
